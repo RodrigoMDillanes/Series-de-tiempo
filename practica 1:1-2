@@ -1,0 +1,20 @@
+temporal <- tempfile()
+download.file("http://www.beta.inegi.org.mx/contenidos/proyectos/enchogares/regulares/enoe/microdatos/enoe_15ymas/2016/2016trim1_dbf.zip",temporal)
+files=unzip(temporal,list = T)$Name
+unzip(temporal, files = files[grepl("dbf",files)])
+install.packages("foreign")
+require(foreign)
+SDEMT116 <- data.frame(read.dbf("sdemt116.dbf"))
+
+#_______________________________________________________________
+
+MOTRAL
+
+temporal <- tempfile()
+download.file("http://www.beta.inegi.org.mx/contenidos/proyectos/enchogares/modulos/motral/2015/microdatos/motral2015_bases_datos_dbf.zip",temporal)
+files=unzip(temporal,list = T)$Name
+unzip(temporal, files = files[grepl("dbf",files)])
+#install.packages("foreign")
+require(foreign)
+empleos <- data.frame(read.dbf("motral2015_empleos.dbf"))
+cuestionario <- data.frame(read.dbf("motral2015_cuestionario.dbf"))
