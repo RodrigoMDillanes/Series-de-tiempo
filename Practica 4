@@ -1,0 +1,35 @@
+#Generando varuables con valores aleatorios
+profesionistas <- sample(5:8,60,replace = T) #En millones
+cpib <- sample(0:5,60,replace = T)
+ocupados <- sample(40:60,60,replace = T)
+desocupados <- sample(3:8,60,replace = T)
+base <- data.frame(profesionistas,cpib,ocupados,desocupados)
+base12 <- base[1:12,]#Muestra los primeros 12 datos
+base[49:60,] #Muestra los ultimos 12 datos
+profesionistasts <- ts(profesionistas,frequency = 12,start = 2010)
+cpibts <- ts(cpib,frequency = 12,start = 2010)
+desocupadosts <- ts(desocupados,frequency = 12,start = 2010)
+ocupadosts <- ts(ocupados,frequency = 12,start = 2010)
+end(profesionistasts)
+plot(cbind(profesionistasts,ocupadosts)) #Grafica dos series de tiempo
+plot(cbind(cpibts,desocupadosts)) #Grafica dos series de tiempo
+plot(cbind(profesionistasts,ocupadosts,cpibts,desocupadosts)) #Grafica las 4 series de tiempo
+basets <- data.frame(profesionistasts,cpibts,desocupadosts,ocupadosts)
+plot.ts(basets[,c(1,3)]) #Otra forma de graficar series de tiempo
+basemultiple <- ts.intersect(base) #Convertir una serie de tiempo multiple
+class(basemultiple)
+#Descargar una serie de tiempo del PIB anual % 1980-2005
+#4 series de tiempo
+#1980-1990
+#1991-2000
+#2001-2010
+#2011-2015
+#Graicar en un solo grafico la serie 2 y 3, 1 y 4
+PIB <- ts(data.frame(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/PIB1980_2015.csv")),frequency = 1,start = 1980)
+
+ts1 <- ts(PIB[time(PIB) >= 1980 & time(PIB) <= 1990],frequency = 1,start = 1980) #Se pierden las propiedades de una ts, por eso de declara otra vez
+ts2 <- ts(PIB[time(PIB) >= 1991 & time(PIB) <= 2000],frequency = 1,start = 1991)
+ts3 <- ts(PIB[time(PIB) >= 2001 & time(PIB) <= 2010],frequency = 1,start = 2001)
+ts4 <- ts(PIB[time(PIB) >= 2011 & time(PIB) <= 2015],frequency = 1,start = 2011)
+plot(cbind(ts2,ts3))
+plot(cbind(ts1,ts4))
