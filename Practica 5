@@ -1,0 +1,49 @@
+profesionistas <- sample(5:8,60,replace = T) #En millones
+cpib <- sample(0:5,60,replace = T)
+ocupados <- sample(40:60,60,replace = T)
+desocupados <- sample(3:8,60,replace = T)
+base <- data.frame(profesionistas,cpib,ocupados,desocupados)
+#base12 <- base[1:12,]#Muestra los primeros 12 datos
+#base[49:60,] #Muestra los ultimos 12 datos
+profesionistasts <- ts(profesionistas,frequency = 1,start = 2000)
+cpibts <- ts(cpib,frequency = 1,start = 2000)
+desocupadosts <- ts(desocupados,frequency = 1,start = 2000)
+ocupadosts <- ts(ocupados,frequency = 1,start = 2000)
+seriemultiple <- ts.intersect(profesionistasts,cpibts,desocupadosts,ocupadosts) #Declarando series de tiempo múltiple
+plot(seriemultiple,main="Serie de tiempo multiple",xlab="Anios",col="green",
+     ylab="Series",type="l",pch=17)
+##Diviendo series de tiempo
+seriemultiple2002_2007 <- window(seriemultiple,start=c(2002,1),end=c(2007,1))
+seriemultiple2007_2059 <- window(seriemultiple,start=c(2007,1),end=c(2059,1))
+plot(seriemultiple2002_2007,main="Serie de tiempo multiple del 2002 a 2007",xlab="Anios",col="green",
+     ylab="Series",type="l",pch=17)
+plot(seriemultiple2007_2059,main="Serie de tiempo multiple del 2002 a 2007",xlab="Anios",col="green",
+     ylab="Series",type="l",pch=17)
+####Ejercicio PRACTICA 5
+#obtener 4 series de tiempo con minimo 30 datos 
+#Las series de tiempo que importen tienen que tener sustento para compararlas
+#Graficarlas por separado y en conjunto
+#Crear serie de tiempo multiple y despues separarlas en 3 tiempos iguales
+
+tipocambio <- data.frame(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/Tipo de cambio peso.csv"))
+USA <- ts(tipocambio$D.lar.USA,frequency = 262,start = c(2016,32))
+EURO <- ts(tipocambio$Euro,frequency = 262,start = c(2016,32))
+LIBRA <- ts(tipocambio$Libra.esterlina,frequency = 262,start = c(2016,32))
+CAN <- ts(tipocambio$Dolar.CAN,frequency = 262,start = c(2016,32))
+plot(USA,main="Tipo de Cambio
+     MXN-USD",xlab="Tiempo",ylab="Peso",type="l",col="red")
+plot(EURO,main="Tipo de Cambio
+     MXN-EUR",xlab="Tiempo",ylab="Peso",type="l",col="blue")
+plot(LIBRA,main="Tipo de Cambio
+     MXN-GBP",xlab="Tiempo",ylab="Peso",type="l",col="purple")
+plot(CAN,main="Tipo de Cambio
+     MXN-CAD",xlab="Tiempo",ylab="Peso",type="l",col="brown")
+plot(cbind(USA,EURO,LIBRA,CAN))
+tipocambiomultiple <- ts.intersect(USA,EURO,LIBRA,CAN)
+plot(tipocambiomultiple,main="Tipo de cambio
+     MXN otras divisas",xlab="Tiempo",ylab="Divisa")
+serie1 <- window(tipocambiomultiple,start=c(2016,32),end=c(2016,118))
+serie2 <- window(tipocambiomultiple,start=c(2016,119),end=c(2016,206))
+serie3 <- window(tipocambiomultiple,start=c(2016,207),end=c(2016,262))
+plot(cbind(serie1,serie3))
+plot(serie1)
