@@ -1,0 +1,19 @@
+¿Cuando aplicamos el modelo aditivo?
+El modelo aditivo se aplica cuando observamos que en una ST tenemos estacionalidad y tendencia
+
+¿Cuando aplicar un modelo multiplicativo?
+El modelo multiplicativose aplica cuando tenemos una ST que se incrementa la estacionalidad a medida que aumentan los valores
+en una ST
+
+Una de las opcions que se tienen para los modelos multiplicativos es transformar la ST de tal forma que la ST sea mas estable en el
+tiempo con la finalidad de usar un modelo aditivo
+
+y_t=S_t*T_t*E_t
+
+aplicando logaritmo
+
+log(y_t)= log(S_t) + log(T_t) + log(E_t) , debemos de tener cuidado porque no siempre se puede
+
+Uno de los elementos que permiten detectar tendencia o estacionalidad en la ST es la descomposicion que permite desagregar una ST 
+graficamente en sus 3 elementos:
+Tendencia, Estacionalidad y Aleatoriedad
