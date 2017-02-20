@@ -1,0 +1,18 @@
+pib <- read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/PIB México.csv")
+tspib <- ts(pib,frequency = 4,start = c(2007,1))
+summary(tspib)
+col2 <- rep(0,33)
+for(i in 1:33){
+  a<-3+i
+  col2[i] <- sum(pib[i:a,1])
+}
+col3 <- col2/4
+col4 <- rep(0,32)
+for(i in 1:32){
+  col4[i] <-(col3[i]+col3[i+1])/2 
+}
+tsdescompuesta <- decompose(tspib)
+tsdescompuesta$trend
+col4 #TENDENCIA!!!!!!
+plot(tsdescompuesta$trend)
+plot(col4)
