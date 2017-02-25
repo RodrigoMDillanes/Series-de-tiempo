@@ -1,0 +1,9 @@
+#https://datamarket.com/data/set/22u3/international-airline-passengers-monthly-totals-in-thousands-jan-49-dec-60#!ds=22u3&display=line
+pasajeros <- read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/international-airline-passengers.csv")
+tspasajeros <- ts(pasajeros,frequency = 12,start = 1949)
+x11();plot(tspasajeros,main="Numero internacional de pasajeros de avion",xlab="Anio",
+     ylab="Miles de personas")
+end(tspasajeros)
+serie <- decompose(tspasajeros,type = "multiplicative")
+x11();plot(serie)
+x11();plot(serie$trend) #Tendencia de un modelo multiplicativo 
