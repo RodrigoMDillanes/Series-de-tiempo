@@ -24,14 +24,13 @@ c
 #  d <- 2+i
 #  c[i]<-des[d,1]/b[i]
 #}
-#c 
 dd <- c(NA,NA)
 prueba <- c(dd,c,dd)
 matriz <- matrix(prueba,nrow = 4)
-sum(matriz[1,],na.rm = T)
+matriz
 IVE <- apply(matriz,1,mean,na.rm=T) # INDICES DE VARIACIONES ESTACIONALES
 IVE_global <- mean(IVE)
 IVE_global
 IVE-IVE_global ## OBTENEMOS EL IVE QUE NOS DA R
 descomponer$seasonal
-matriz
+
