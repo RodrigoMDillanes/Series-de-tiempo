@@ -6,13 +6,13 @@ for(i in 1:45){
   a[i] <- mean(des[i:q,1])
 }
 a
-descomponer <- decompose(tsdes)
-descomponer$trend
 b <- rep(0,44)
 for(i in 1:44){
   b[i] <- (a[i]+a[i+1])/2
 }
 b #TENDENCIA
+descomponer <- decompose(tsdes)
+descomponer$trend
 c <- rep(0,44)
 for(i in 1:44){ # MODELO ADITIVO
   d <- 2+i
