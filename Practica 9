@@ -1,0 +1,27 @@
+require(fpp)
+x11();plot(window(elec,start=1980),ylab="Gwh",xlab="Year",main="Australian electricity production") #Mensual
+#estacionalidad, tendenciay ciclico
+x11();seasonplot(elec,s=12,year.labels = T,col = rainbow(20),year.labels.left = T,pch=15)
+
+x11();plot(bricksq,ylab="million units",xlab="Year",main="Australian clay brick production") #Trimestrales
+x11();seasonplot(bricksq,s=4,year.labels = T,col = rainbow(20),year.labels.left = T,pch=15)
+#estacionalidad y ciclo no mucha tendencia
+
+x11();plot(hsales,main="sales of new one-family houses, USA",ylab="Total sales",xlab="Year")
+x11();seasonplot(hsales,s=12,year.labels = T,col = rainbow(20),year.labels.left = T,pch=15)
+#no estacionalidad, no tendencia, posible ciclo
+dec <- decompose(bricksq)
+sinesta <- bricksq-dec$seasonal #eliminando estacionalidad
+sintend <- bricksq-dec$trend #Esliminando estacionalidad
+x11();plot(sinesta)
+x11();plot(sintend)
+
+#Practica 9
+#http://datos.bancomundial.org/indicador/NY.GDP.MKTP.KD.ZG
+#Cambios porcentuales de PIB en Mexico desde 1961
+#interpretacion de la grafica, detectar ciclos 
+#70-89
+PIB <- read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/PIB_porcentaje.csv")
+PIB <- ts(PIB[1:55,1],frequency = 1,start = 1961)
+#Subir el archivo en word con la interpretacion
+#Tarea 1,poner la base, word, script
