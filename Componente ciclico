@@ -1,0 +1,27 @@
+Una vez que logramos descomponer una ST y conocemos la tendencia y la estacionalidad se realiza un analisis a la grafica
+de ST para determinar y clasificar la ST con base en sus componentes.
+
+Hasta ahorita hemos visto tres componentes: tendencia, estacionalidad y aleatoriedad
+
+Sin embargo en las ST existe un comportamiento de la ST que se conoce como componente ciclico, el cual es parecido a la 
+estacionalidad debido a que presenta diferentes cambios en la ST.
+
+El componente ciclico de una ST se observa con cambios que no tienen un periodo determinado (duracion entre cilos generalmente
+al menos 2 años)
+
+Es importante señaral que existen confusiones entre os componentes ciclicos estacionales y tendencia. Particularmente las
+principales confusiones se presentan entre la estacionalidad y el componente ciclico.
+
+Las principales diferencias entre componente ciclico y estacionariedad son:
+(1) Estacional -> Patron longitud constante
+    Ciclico    -> Patron longitud variable
+    
+(2) Estacional -> Duracion media de la longitud mas corta 
+    Ciclico    -> Duracion media de la longitud mas larga
+    
+(3) Estacional -> Magnitud del patron mas constante
+    Ciclico    -> Magnitud del patron mas variable
+    
+(4) El momento de incrementos y decrementos es predecible en una ST estacional, para una ST ciclicaestos cambios son 
+impredecibles a largo plazo
+
