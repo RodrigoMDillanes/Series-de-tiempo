@@ -1,0 +1,55 @@
+---
+title: "Crecimiento del PIB en Mexico 1961-2015"
+author: "Rodrigo Mondragon Dillanes"
+date: "6/3/2017"
+output:
+  word_document: default
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+En la Grafica 1 se muestran las variaciones porcentuales del Producto Interno Bruto (PIB) desde 1961 hasta el 2015, los datos fueron obtenidos de la base de datos del Banco Mundial que pueden ser consultados en el siguiente link: <http://datos.bancomundial.org/indicador/NY.GDP.MKTP.KD.ZG>
+
+Ademas, podemos notar en la Grafica 1 que la serie de tiempo no presenta una tendencia notoria pero en los a??os 1983,1995 y 2009 se pueden considerar como ciclos.
+```{r, fig.width = 4, fig.height = 3 }
+PIB <- read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/PIB_porcentaje.csv")
+PIB <- ts(PIB,frequency = 1,start = 1961)
+plot(PIB,main="Crecimiento del PIB (% anual)
+1961-2015",xlab="Anio",ylab="Porcentaje",sub="Grafica 1",cex.sub=.5,xaxt="n")
+axis(1,at=seq(1961,2015,by=4),las=2)
+```
+
+En este trabajo se considerar?? como periodo de estudio los a??os de 1970 a 1989, por lo que se analizar?? de manera mas profunda dicho periodo.
+
+###PIB 1970-1989
+
+
+```{r, fig.width = 4, fig.height = 3}
+a <- window(PIB,start=1970,end=1989)
+plot(a,ylab="Porcentaje",xlab="Anio",main="Crecimiento del PIB (% anual)
+1970-1989",xaxt="n",sub="Grafico 2",cex.sub=.5 )
+axis(1,seq(1970,1989,by=2),las=2)
+segments(1983,-4,1983,10,col = "red",lty=3)
+segments(1986,-4,1986,10,col = "blue",lty=3)
+segments(1977,3.3906397,1977,10,col="purple",lty=3)
+
+```
+
+En el Grafico 2 se muestra el el comportamiento del crecimiento del PIB a lo largo del periodo de estudio.
+El primer punto importante, marcado en la linea punteada color morado, es en el a??o de 1977. Uno de los principales factores que llevaron a esta ca??da fue el desplome del precio del petr??leo en 1973, lo que llev?? a un aumento del d??ficit p??blico y de cuenta corriente, la deuda p??blica y la inflaci??n. Por lo que en 1976 y 1977 la situaci??n se volvi?? insostenible provocando fuga de capitales.
+
+En 1982,linea punteada color rojo, fue la llamada "crisis de la deuda", debido a que la deuda externa contra??da por el Estado Mexicano incremento significativamente. Datos del Banco de M??xico estimas que en dicho a??o la dedua ascend??a a un bill??n seiscientos sesenta mil cien millones de pesos, de los cuales, 10,879 millones de d??lares fueron pagados por concepto de intereses. En agosto de 1982 el gobierno mexicano declar?? que el pa??s no estaba en condiciones de continuar los pagos, y decret?? una moratoria de seis meses 
+
+Y por ??ltimo, la linea punteada color azul representa la crisis de 1986, que fue provocada porque el gobierno debido a la necesidad de cumplir con las obligaciones de pago de la deuda, instrument?? reformas de liberalizaci??n y ajuste econ??nico a mediados de la d??cada de los 80's. El desplome de los precios del petr??leo en 1986, fue otro factor que agrav?? la situaci??n econ??mica del pa??s, dada la alta dependencia de los ingresos de M??xico de la explotaci??n del petr??leo. Pese a las reformas de ajuste econ??mico, el d??ficit p??blico sigui?? creciendo debido a los excesivos compromisos financieros del gobierno y la insuficiencia de los ingresos para cu- brirlos. Con el fin de pagar los intereses y amortizar la deuda, el gobierno dispuso de los ingresos netos de Pemex, destin?? ingresos fiscales ordinarios para pro- gramas de rescates de empresas privadas mexicanas endeudadas
+
+
+
+#### Fuentes
+<http://archivo.estepais.com/inicio/historicos/214/5_mancera-email.pdf>
+
+<https://coyunturapoliticamx.wordpress.com/2012/04/26/la-crisis-financiera-de-mexico-durante-los-80s-la-detonante-deuda-actual/>
+
+<http://www.cadtm.org/La-crisis-de-la-deuda-mexicana-y>
