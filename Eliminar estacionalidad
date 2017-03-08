@@ -1,0 +1,19 @@
+deso <- read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/tarea2.csv")
+desot <- ts(deso,frequency = 4,start = 2005)
+x11();plot(desot)
+dectsd <- decompose(desot)
+dectsdmul <- decompose(desot,"mult") #Modelo multiplicativo
+x11();plot(dectsd)
+x11();plot(dectsdmul)
+
+#Desestacionalizar una serie
+#Eliminamos la estacionalidad para hacer un mejor pronostico,
+require(fpp)
+adj <- seasadj(dectsd) #Quita la estacionalidad de una serie de tiempo
+adj
+plot(adj) #Funcion que elimina la estacionalidad
+#O la podemos hacer manualmente
+sinesta <- desot-dectsd$seasonal #En caso de ser el modelo aditivo
+plot(sinesta)
+
+x11();plot(desot);lines(adj,col="red")
