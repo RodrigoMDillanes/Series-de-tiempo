@@ -1,0 +1,27 @@
+La funcion de autocorrelacion mide la correlacion entre datos de la serie distanciados en un lapso de tiempo k
+
+Por ejemplo:
+Si tenemos una ST con N datos se pueden formar N-1 parejas y calcular el coeficiente de correlacion de estas parejas, por ejemplo:
+(Y1Y2)(Y2Y3)(Y3Y4) ... a este coeficiente se le denomina coeficiente de autocorrelacion de orden 1
+
+Si tenemos oarejas con distanciamiento de dos unidades (Y1Y3)(Y2Y4)(Y3Y5) se denominan coeficientes de correlacion de orden 2
+De forma general si formamos parejas con distancia de k unidades, el coef de autocorrelacion de orden k
+
+En muchas ST los datos estan correlacionados entonces si se logra esta correacion se mejora el pronostico.
+
+Con la autocorrelacion se puede conocer la dependencia de una ST. La dependencia serial entre observaciones se define con la
+autocorrelacion
+
+Si ademas de las autocorrelaciones(AC) de orden 1, se calculan correlaciones con otros intervalos, se puede construir una 
+representacion grafica denominada correlograma que permite confirmar algunos componentes como tendencia o ciclos.
+Las causas principales de la presencia de autocorrelacion son las tendencias o ciclos. En ese sentido, el coef de autocorrelacion es un 
+indicador de que exista tendencia 0 cliclo en la ST.
+
+Para obtener la correlacion se necesita primero obtener la covarianza.
+
+La covarianza es una medida de asociación entre dos variables y se definen
+cov(X,Y) = sigma[(X_i - Xbarra)(Y_i - Ybarra)/(n-1)]
+
+Para obtener la covarianza en R se utiliza la función cov()
+En lo qie repecta a la correlacion se define como la siguiente manera
+cor(X,Y) = cov(X,Y)/sd(X)sd(Y)
