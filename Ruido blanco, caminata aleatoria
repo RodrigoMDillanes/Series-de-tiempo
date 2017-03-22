@@ -1,0 +1,49 @@
+Ruido Blanco
+
+Un ruido blanco es una serie de tiempo estacional en la cual las observaciones o los datos de la serie de tiempo no tiene relacion
+o estan incorrelados.
+Para determinar si una serie de tiempo tiene ruido blanco graficamente se utiliza un correlograma que muestra la incorrelacion de las 
+diferentes observaciones. En este sentido, se espera que este grafico todos los coeficientes de la correlacion son cercanos a cero. 
+El unico valor que su correlacion es 1 en este correlograma es en la primera observacion.
+Formalmente se define una serie de tiempo de ruido blanco como una proceso estocastico donde los valores son independientes e idendica
+mente distribuidos a lo largo del tiempo con media cero y varianza sigma se denota por
+$$e_t~N(0,/sigma^2)$$
+$$cov(e_{ti},e_{tj})=0$$
+para todo $ti diferente de tj$
+
+El correlaograma es un grafico de las autocorrelaciones  P(k) donde las autocorrelaciones entre $y_t$ y $y_{t+k}$
+1
+|
+|---------------
+|
+|_______________
+|
+|----------------
+|
+
+Siempre una serie de tiempo de ruido blanco la primera autocorrelacion es 1, es decir P(0)=1
+En este correlograma las luneas discontinuas son las bandas de confianza de P(k) a 95%. La hipotesis que se maneja es que la 
+serie de ruido blanco siempre y cuando las autocorrelaciones noo rebasen el nivel de 95%
+La funcion en R oara obtener el correlograma es acf()
+
+Caminata aleatoria
+
+Una serie de tiempo con caminata aleatoria se dertermina con las series de tiempo que sus observaciones son igual al su 
+observacion anterior con un pequeño incremento o decrementeo de ese valor
+
+Supongamos una serie de tiempo $Y_t$
+Entonces una serie de tiempo con caminata aleatoria es  $$y_t=y_{t-1}+w_t$$
+lo importante en una serie de tiempo con caminata aleatoria es que el valor siguiente se determina como el valor presente mas un 
+independiente.
+Si la serie de tiempo tiene caminata aleatoria se considera como no estacionaria. Es importante señalar que en una serie de tiempo
+con caminata aleatoria las autocorrelaciones son cercanas a 1
+Una serie de tiepo con caminata aletoria es con datos no estacionarios.
+La serie de tiempo con caminata aleatoria tiene las siguientes particularidades:
+
+- Son series de tiempo con largos periodos de crecimiento o decrecimiento
+- Repentinos cambios de direccion
+- Los pronosticos de un modelo que aplique a una serie de tiempo con caminata aleatoria, son igual a la ultima observacion como 
+movimientos futuros e impredecibles.
+
+
+
