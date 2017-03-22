@@ -45,5 +45,11 @@ La serie de tiempo con caminata aleatoria tiene las siguientes particularidades:
 - Los pronosticos de un modelo que aplique a una serie de tiempo con caminata aleatoria, son igual a la ultima observacion como 
 movimientos futuros e impredecibles.
 
-
+require(foreign)
+pib <- ts(data.frame(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/PIB_porcentaje.csv")),
+          frequency = 1,start = 1961)
+desoc <- ts(data.frame(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/tarea2.csv")),
+          frequency = 1,start = 1961)
+acf(pib) #La mayoris de los valores estan por debajo de la linea punteada
+acf(desoc)
 
