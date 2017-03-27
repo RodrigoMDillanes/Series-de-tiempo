@@ -1,0 +1,31 @@
+Método sueavizado exponencial
+
+El metodo de pronostico mas sencillo de suavizado es el exponencial simple y se utiliza para pronosticar series de tiempo
+sin tendencia o estacionalidad.
+
+La idea de este metodo es otorgar la mayor ponderacion a los datos mas actuales de la serie de tiempo.
+Los pronosticos se calculan utilizando promedio ponderados donde las ponderaciones se reducen exponencialmente a medida que las 
+observaciones son mas lejanas.
+
+Ygorro_TH/T = a*Y_t +a*(1-a)*Y_{t-1} +a*(1-a)^2*Y_{t-2}+...
+donde el parametro a esta entre 0 y 1, donde la ST es Y1,Y2,...,Yt
+
+#http://www3.inegi.org.mx/Sistemas/infoenoe/Default_15mas.aspx?s=est&c=27736
+asa <- data.frame(t(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/Tasa de trabajo asalariado.csv",header = T)[7,2:49]))
+asa$X7 <- as.numeric(as.character(asa$X7))
+asat <- ts(asa$X7,frequency = 4,start = c(2005,1))
+
+###Suavizado exponencial
+require(forecast)
+mod1 <- ses(asat,alpha = .1,initial = "simple",h=8) # alpha es el parametro que suaviza la ST
+mod2 <- ses(asat,alpha = .3,initial = "simple",h=8)
+mod3 <- ses(asat,alpha = .95,initial = "simple",h=8)
+x11();plot(mod1,ylab = "Asalariados",xlab = "Anio",main = "Tasa de trabajo asalariado",type = "o")
+lines(mod1$fitted,col="brown",type="o")
+lines(mod2$fitted,col="red",type="o")
+lines(mod3$fitted,col="green",type="o")
+lines(mod1$mean,col="brown",type="o")
+lines(mod2$mean,col="red",type="o")
+lines(mod3$mean,col="green",type="o")
+legend("topleft",lty=3,col = c(1,"brown","red","green"),c("data",expression(alpha==0.1),expression(alpha==0.3),
+                                                          expression(alpha==0.95)),pch = 1)
