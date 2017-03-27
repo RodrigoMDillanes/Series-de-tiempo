@@ -1,0 +1,122 @@
+require(foreign)
+pib <- ts(data.frame(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/PIB_porcentaje.csv")),
+          frequency = 1,start = 1961)
+desoc <- ts(data.frame(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/tarea2.csv")),
+          frequency = 4,start = 2005)
+acf(pib) #La mayoris de los valores estan por debajo de la linea punteada
+acf(desoc)
+
+#TAREA: buscar una serie de tiempo de mexico en donde con el correlograma determinen 
+#si tiene ruido blanco, otra ST donde mueste el correlograma exponga que la ST tiene caminata aleatoria
+#########################################
+
+#################### Modelos lineales para pronosticar
+#METODO INGENUO
+#### son la aplicacion de pronosticos lineales
+### como el ingenuo, primedio, ingenuo estacional y el de deriva
+## el pronostico ingenuo esta basado en la ultima observacion que arroja la serie de tiempo. Es decir,
+#este pronostico asume que la observacion mas importante es la ultima.
+#La funcion en R es naive()
+
+require(forecast)
+(desocmod2 <- naive(pib,h=10))
+
+
+#METODO PROMEDIO
+#este metodo le da el mismo peso a todos los datos u observaciones, es decir, se asume con este
+#metodo que todas las observaciones tienen la misma importancia por lo que el pronostico
+#es un promedio de todas las observaciones
+#La funcion en R es meanf(serie,h=no. de pronosticos)
+
+(desocmod1 <- meanf(desoc,h=10))
+
+
+#METODO INGENUO ESTACIONAL
+#este metodo se utiliza en ST con alta estacionalidad, este pronostico consiste en darle
+#el mayor peso a la mayor ponderacion al dato del mismo periodo en el anio anterior
+#por ejemplo trimestre 2 del anio 2005 es ifual al trimestre 2 del 2006
+#La funcion en R es  snaive
+
+(desocmod3 <- snaive(desoc,h=10))
+
+
+#METODO DE LA DERIVA
+#este metodo consiste en que el pronostico puede incrementar o  dependiendo del promedio de los
+#cambios historicos de la ST
+
+(desocmod4 <- rwf(desoc,h=10,drift = T))
+
+x11();plot(desocmod1,col = "red",main = "Pronostico de descocupacion trimestral")
+lines(desocmod2$mean,col="blue")
+lines(desocmod3$mean,col="grey")
+lines(desocmod4$mean,col="brown")
+legend("topright",lty = 1,col = c("red","blue","grey","brown"),legend = c("media","ingenuo","ingenuo estacional","deriva"))
+
+x11();plot(desocmod1,col = "red",main = "Pronostico de descocupacion trimestral")
+lines(desocmod2$fitted,col="blue")
+lines(desocmod3$fitted,col="grey")
+lines(desocmod4$fitted,col="brown")
+legend("topright",lty = 1,col = c("red","blue","grey","brown"),legend = c("media","ingenuo","ingenuo estacional","deriva"))
+
+x11();plot(desocmod1,col = "red",main = "Pronostico de descocupacion trimestral")
+lines(desocmod2$residuals,col="blue")
+lines(desocmod3$residuals,col="grey")
+lines(desocmod4$residuals,col="brown")
+legend("topright",lty = 1,col = c("red","blue","grey","brown"),legend = c("media","ingenuo","ingenuo estacional","deriva"))
+
+desocmod1$residuals
+
+#Cortar serie de 2005 a 2010 y hacer los pronosticos hasta el 2016 y compararlos con los datos reales, restar el valor real con el pronosticado
+#con los 4 pronosticos
+desoc <- ts(data.frame(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/tarea2.csv")),
+            frequency = 4,start = c(2005,1))
+end(desoc)
+serie <- window(desoc,star=c(2005,1),end=c(2010,4))
+require(forecast)
+ingenuo <- naive(serie,h=24)
+promedio <- meanf(serie,h=24)
+estacional <- snaive(serie,h=24)
+deriva <- rwf(serie,h=24)
+x11();plot(ingenuo)
+lines(promedio$mean,col="darkgoldenrod4")
+lines(estacional$mean,col="red")
+lines(deriva$mean,col="darkslategrey")
+lines(desoc,col="black")
+legend("topleft",lty = 1,col = c("black","red","darkslategrey","darkgoldenrod4","blue"),legend = c("Valores originales","Estacional","Deriva","Promedio","Ingenuo"))
+
+#FUNCION 
+#diferencias(metodo,serie)
+#metodo:
+#1: Estacional
+#2: Ingenuo
+#3: Promedio
+#4: Deriva
+diferencias <- function(metodo=list("Estacional","Ingenuo","Promedio","Deriva"),seriecom){
+  require(forecast)
+  if(metodo=="Estacional") {
+    estacional <- snaive(serie,h=24)
+    dif <- seriecom[25:48]-estacional$mean
+    return(dif)
+    break()
+  }
+  if(metodo=="Ingenuo") {
+    ingenuo <- naive(serie,h=24)
+    dif <- seriecom[25:48]-ingenuo$mean
+    return(dif)
+    break()
+  }
+  if(metodo=="Promedio") {
+    promedio <- meanf(serie,h=24)
+    dif <- seriecom[25:48]-promedio$mean
+    return(dif)
+    break()
+  }
+  if(metodo=="Deriva") {
+    deriva <- rwf(serie,h=24)
+    dif <- seriecom[25:48]-deriva$mean
+    return(dif)
+    break()
+  }
+}
+
+diferencias("Estacional",desoc)
