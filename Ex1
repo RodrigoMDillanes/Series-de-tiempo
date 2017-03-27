@@ -1,0 +1,24 @@
+-Promedios moviles
+-IVE
+-Tendencia, ciclo, estacionalidad
+-Modelo aditivo, multiplicativo
+-Desarrollar una ST en R
+-Importar
+Funciones
+ts
+ts y Time-Series
+naive()
+decompose
+plot
+acf
+seasadj
+names()
+como obtener de la ST solo los datos de tendendia o estacionalidad
+tsmult
+seasonplot
+-Desarrollar en una hoja un script
+ejemplo
+importar una base de datos
+llamar la base como st
+cortar la base en 3 periodos
+graficarla
