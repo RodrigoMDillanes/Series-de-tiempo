@@ -1,0 +1,34 @@
+temporal <- tempfile()
+download.file("http://www.beta.inegi.org.mx/contenidos/proyectos/enchogares/regulares/enoe/microdatos/enoe_15ymas/2016/2016trim1_dbf.zip",temporal)
+files=unzip(temporal,list = T)$Name
+unzip(temporal, files = files[grepl("dbf",files)])
+require(foreign)
+coe216 <- data.frame(read.dbf("coe2t116.dbf"))
+ls(coe216)
+coe216$P6D <- as.numeric(as.character(coe216$P6D))
+coesins <- subset(coe216,coe216$P6D>=1 & coe216$P6D<=5)
+coe216$sinseg <- ifelse(coe216$P6D>=1 & coe216$P6D<=5,1,2)
+table(coe216$sinseg)
+
+#Eejrcicio
+#Hacer la variable de desocupados 
+coe116 <-  data.frame(read.dbf("coe1t116.dbf"))
+#P1b= 2 y (P2_1=1 ó P2_2=2 ó P2_3=3) y (P2b=1) y (p2c ≠ 2 y 9)
+coe116[,c("P1C","P1B","P2_1","P2_2","P2_3","P2B","P2C")] <-sapply(coe116[,c("P1C","P1B","P2_1","P2_2","P2_3","P2B","P2C")], as.numeric)
+#coe116[,c("P1C","P1B","P2_1","P2_2","P2_3","P2B","P2C")] <- as.numeric(as.character(coe116[,c("P1C","P1B","P2_1","P2_2","P2_3","P2B","P2C")]))
+coe116$desco <- ifelse(coe116$P1C==11,0,
+                ifelse(coe116$P1B==2,1,
+                ifelse(coe116$P2_1==1,1,
+                ifelse(coe116$P2_2==2,1,
+                ifelse(coe116$P2_3==3,1,
+                ifelse(coe116$P2C!=2 & coe116$P2C!=9,1,2))))))
+
+coe116$desco <- ifelse(coe116$P1C==11 & coe116$P1B==2  & coe116$P2C!=2 & coe116$P2C!=9,1,
+                ifelse(coe116$P2_1==1| coe116$P2_2==2 |coe116$P2_3==3,1,2))
+
+
+coe116$desco <- ifelse(coe116$P1C==11 & coe116$P1B==2 & (coe116$P2_1==1| coe116$P2_2==2 |coe116$P2_3==3) & (coe116$P2C!=2 & coe116$P2C!=9),1,2)
+table(coe116$desco)
+coe116$desco
+require(questionr)
+wtd.table(coe116$desco,weights = coe116$FAC)
