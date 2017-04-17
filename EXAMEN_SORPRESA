@@ -1,0 +1,58 @@
+televisa <- read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/accionesTELEVISA.csv")
+require(forecast)
+require(fpp)
+televisa <- ts(televisa[1:252,],frequency = 252,start = c(2016,1),end = c(2016,252))
+mod1 <- ses(televisa,alpha = .2,initial = "simple",h=8) 
+mod2 <- ses(televisa,alpha = .4,initial = "simple",h=8) 
+mod3 <- ses(televisa,alpha = .6,initial = "simple",h=8) 
+mod4 <- ses(televisa,alpha = .8,initial = "simple",h=8) 
+names(mod1)
+x11();plot(mod1,ylab = "Precio",xlab = "Fecha",main = "Televisa")
+lines(mod1$fitted,col="brown")
+lines(mod2$fitted,col="red")
+lines(mod3$fitted,col="green")
+lines(mod4$fitted,col="green")
+lines(televisa,col="pink")
+
+##mod 1
+aa<- televisa - mod1$fitted
+mean(abs(aa))####MAE
+sqrt(mean(aa^2))########RMSE
+evalm1<-accuracy(mod1)
+evalm1
+##mod 2
+a2<- televisa - mod2$fitted
+mean(abs(a2))####MAE
+sqrt(mean(a2^2))########RMSE
+evalm2<-accuracy(mod2)
+evalm2
+
+##mod 3
+a3<- televisa - mod3$fitted
+mean(abs(a3))####MAE
+sqrt(mean(a3^2))########RMSE
+evalm3<-accuracy(mod3)
+evalm3
+
+##mod 4
+a4<- televisa - mod4$fitted
+mean(abs(a4))####MAE
+sqrt(mean(a4^2))########RMSE
+evalm4<-accuracy(mod4)
+evalm4
+
+#Se elige el modelo 4 porque es el que tiene el MAE mas cercano a cero
+
+EVAL <- data.frame("MAE"=c(evalm1[3],evalm2[3],evalm3[3],evalm4[3]),"RMSE"=c(evalm1[2],evalm2[2],evalm3[2],evalm4[2]))#La fila es correspondiente al numero del modelo
+which(grepl(min(EVAL$MAE), EVAL$MAE))
+which(grepl(min(EVAL$RMSE), EVAL$RMSE)) #El mejor modelo es el 4
+#which.min(abs(EVAL$MAE-0)) #Arroja la posicion del vector que esta mas cercano al valor cero
+
+### Descomponiendo la serie
+des <- decompose(televisa) #No lo puedo descomponer
+plot(televisa,main="Acciones de Televisa
+Enero-Diciembre 2016",xlab="Fecha",ylab="Precio")
+#Al analizar graficamente la serie de tiempo observamos que no presenta tendencia significativa, 
+#parece que presenta estacionalidad pero se pueden interpretar mejor como ciclos debido a que 
+#se presentan en periodods de tiempo desiguales, y al final de la serie de tiempo se observa
+#una caida importante en el valor de las acciones llegando a ser de 81.94 pesos.
