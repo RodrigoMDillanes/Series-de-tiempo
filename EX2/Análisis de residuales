@@ -1,0 +1,80 @@
+des<-read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/tarea2.csv")
+dests<-ts(des,frequency =4,start=2005 )
+require(fpp)
+mod1<-ses(dests,alpha=.2,initial="simple",h=4)
+mod2<-ses(dests,alpha=.4,initial="simple",h=4)
+mod3<-ses(dests,alpha=.6,initial="simple",h=4)
+mod4<-ses(dests,alpha=.8,initial="simple",h=4)
+plot(mod1,ylab = "tasa ")
+lines(fitted(mod1),col="green",type="o")
+lines(fitted(mod2),col="red",type="o")
+lines(fitted(mod3),col="blue",type="o")
+lines(fitted(mod4),col="pink",type="o")
+
+############# ANALISIS DE RESIDUALES #############
+#Lo que se va a analizar de los residuales es que cumplean
+#con las propiedades de residuales que consiste en:
+#1.- los residuales no esten correlacionados
+#2.- tienen media cero
+#3.- tienen varianza constante
+#4.- los residuales estan normalmente distribuidos
+
+# para esto en R se tienen que obtener los residuales de cada uno de los 4 modelos
+#con la dunalidad de analizarlos y para conocer su comportamiento
+#Para lo anterior primero vamos a graficar nuestros datos con los valores ajustados
+#para despues extraer los residuales de cada modelo y comenzar el analisis correspondiente
+x11();plot(mod1,ylab = "",xlab = "",main = "",type = "l")
+lines(mod1$fitted,col="orange",type="l")
+lines(mod2$fitted,col="blue",type="l")
+lines(mod3$fitted,col="purple",type="l")
+lines(mod4$fitted,col="red",type="l")
+
+#obteniendo los residuales: valor observado- valor estimado
+res1 <- residuals(mod1)
+res2 <- residuals(mod2)
+res3 <- residuals(mod3)
+res4 <- residuals(mod4)
+
+#INDEPENDENCIA
+#En las graficas debemos observar de que no existe un patron, lo que indica que son independientes
+plot(res1,type = "l",ylab = "Residuales")
+plot(res2,type = "l",ylab = "Residuales")
+plot(res3,type = "l",ylab = "Residuales")
+plot(res4,type = "l",ylab = "Residuales")
+
+#NORMALIDAD
+hist(res1,nclass = "FD")
+hist(res2,nclass = "FD")
+hist(res3,nclass = "FD")
+hist(res4,nclass = "FD")
+ks.test(res1,"pnorm")
+
+#PRUEBA DE AUTOCORREACION DE LOS RESIDUALES
+#Para analizar la autocorrelacion hemos visto que utilizamos la funcion acf() en la cual
+#nos muestra el correlgrama que nos permite mostrar la relacion e¡que existe entre los datos.
+
+#Para obtener el correlograma de los residuales analizados se realiza de la siguiente manera.
+Acf(res1,main="Correlograma 1")
+Acf(res2,main="Correlograma 2")
+Acf(res3,main="Correlograma 3")
+Acf(res4,main="Correlograma 4") #Gran parte de los residuales no estan relaciones, podriamos usar este modelo
+
+#ademas de esta prueba que es una prueba grafica, se utiliza la prueba de ljung Box
+#Para esta prueba se utiliza la funcion Box.test que permite conocer la correlacion que existe
+#entre los residuales a traves de una prueba de hipotesis.
+
+Box.test(res1,lag = 10,type = "Ljung") #lag es el numero de desfase de la prueba, 10 datos usualmente usados
+Box.test(res2,lag = 10,type = "Ljung")
+Box.test(res3,lag = 10,type = "Ljung")
+Box.test(res4,lag = 10,type = "Ljung")
+
+#El estadistico Q de Ljung Box prueba la hip. nula qde que las autocorrelaciones de hasta un desfase k son iguales a cero,
+#ie, los valores de los datos son aleatorios e independientes hasta un cierto numero de desfase.
+#Si el LQB es mayor a un valor cristico especificado, las autocorrelaciones para uno o mas desfases podrian ser estadisticamente
+#diferentes de cero, lo que indicaria que los valores no son aleatorios ni independientes
+
+#Las etapas que se utilizan en un analisis de residuales son:
+#1.- elegir el modelo a traves de las medidas MAE y RMSE
+#2.- Realizar las pruebas a los residuales de normalidad, independencia y varianza constante.
+#    Una vez que las pruebas son viables ta se puede elegir el modelo como una opcion a considerar para realizar los 
+#    pronostcos necesarios
