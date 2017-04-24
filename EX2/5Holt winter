@@ -1,0 +1,27 @@
+#Holt winter
+#se usa para una serie de tiempo con componente estacional, hay dos metodos
+#aditiva se usa cuando el componente estacional no es tan brusco, 
+#para eso se usa el multiplicativo
+des<-read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/tarea2.csv") #Esta serie de tiempo no es estacional pero sirve para el ejemplo
+dests<-ts(des,frequency =4,start=2005 )
+mod1 <- hw(dests,seasonal = "additive")
+mod2 <- hw(dests,seasonal = "multiplicative")
+plot(mod1)
+lines(mod2$mean)
+
+#https://datamarket.com/data/set/22ox/monthly-milk-production-pounds-per-cow-jan-62-dec-75#!ds=22ox&display=line
+lecheentera <- ts(data.frame(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/monthly-milk-production-pounds-p.csv")),frequency = 12,start = c(1962,1))
+plot(lecheentera)
+lechecortada <- ts(data.frame(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/monthly-milk-production-pounds-p.csv")[1:134,]),frequency = 12,start = c(1962,1))
+plot(lechecortada)
+require(fpp)
+mod1 <- hw(lechecortada,seasonal = "additive",h =34 )
+mod2 <- hw(lechecortada,seasonal = "multiplicative",h=34)
+mod3 <- holt(lechecortada,initial = "simple",exponential = T,h=34)
+
+x11();plot(mod1,main ="Produccion mensual de leche en libras 
+1962",xlab="Tiempo",ylab="Libras" )
+lines(mod2$mean,col="red")
+lines(mod3$mean,col="yellow")
+lines(lecheentera)
+legend("topleft",col = c("black","blue","red","yellow"),legend = c("Data","HW Aditivo","HW multiplicativo","Exponencial"),lty=1)
