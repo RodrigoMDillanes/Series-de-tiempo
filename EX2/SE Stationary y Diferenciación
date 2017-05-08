@@ -1,0 +1,29 @@
+### SERIE DE TIEMPO ESTACIONARIA (Stationary diferente de Seasonally) 
+#
+#Caracteristicas de una Serie Estacionaria(SE) son:
+#1.- Estas series no dependen del momento en que se observan
+#2.- Las series con tendencia o estacionales NO SON SERIES ESTACIONARIAS
+#3.- Una serie de tiempo con ruido blanco es una serie estacionaria
+#4.- Una serie de timepo ciclica (sin estacional o tendencia) frecuentemente es estacionaria
+#5.- Una serie de tiempo estacionaria frecuentemente es impredecible
+#6.- Una SE no tiene patrones predecibles a largo plazo
+#7.- Las graficas de una Se mostrara una serie aproximadamente horizontal
+
+### DIFERENCIACION
+
+# La diferenciacion de una serie de tiempo consiste en calcular las diferencias entre las
+#observaciones consecutivas.
+#La diferenciacion permite en muchos casos convertir una serie de tiempo estacionaria
+#La diferenciacion puede ayudar a establecer la media de una serie de tiempo eliminando
+#tendencia y el componente estacional.
+
+ICA <- read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/Acciones ICA.csv")
+ICA <- ts(ICA,frequency = 252,start = c(2006,1))
+x11();acf(ICA) #Tiene caminara aletoria
+plot(ICA)
+
+aa <- sample(300,900,252)
+ta <- ts(aa,frequency = 252,start = 2016)
+acf(ta) #Tiene ruido blanco
+plot(ta)
+example(acf)
