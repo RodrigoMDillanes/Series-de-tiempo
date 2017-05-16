@@ -1,0 +1,7 @@
+ica <- read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/ICA.csv")
+ica <- ts(ica,frequency = 252,start = c(2016,1))
+plot(ica)
+acf(ica)
+difica <- diff(ica)
+acf(difica)
+plot(difica)
