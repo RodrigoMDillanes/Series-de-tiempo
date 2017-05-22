@@ -1,0 +1,95 @@
+library(foreign)
+cemex <- ts(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/CEMEX_BIMBO.csv")[,1],frequency = 252,start = 2016)
+bimbo <- ts(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/CEMEX_BIMBO.csv")[,2],frequency = 252,start = 2016)
+
+##### 1.- revisar que la serie es estacionaria
+# se aplica la prueba de la raiz unitaria a traves de la funcion adf.test es esperamos a que el p-value sea menor a .05
+library(fpp)
+adf.test(bimbo)
+## entonces aplicamos diferenciacion debido a que la serie original no es estacionaria
+bimbodiff <- diff(bimbo)
+adf.test(bimbodiff) #La serie en su primera diferenciacion es estacionaria, por lo que en ARIMA(p,d,q) el valor de d es 1,
+#que es el numero de veces que aplicamos diferenciacion a la serie hasta ser estacionaria
+
+#### 2.- se le aplican dos tipos de test
+##Para el encontrar el valor de los promedio moviles se usa el correlograma, y se observan en numero de lineas que sobresalen 
+#las lineas punteadas y debes der ser como una onda, que suban y bajen
+acf(bimbodiff)
+# como salen dos q=2
+
+### Para determianr el vaor de p que se relaciona con los modelos autorregresivos
+#se utiliza la sig funcion
+pacf(bimbodiff) ## Se observan las lineas que sobrepasan la franja
+## entonces p=4
+
+#Por lo que el modelo seria el siguiente
+
+###    ARIMA(4,1,2)
+
+modbimbo <- Arima(bimbo,order = c(4,1,2)) ### ES importante 
+summary(modbimbo)
+ ## el ma1 y ma2 son los promedios moviles 
+##los ar son los valores de los autorregresivos
+
+##Proponemos otro modelo para comparar los valores de Aicc
+modbimbo1 <- Arima(bimbo,order = c(3,1,2))
+summary(modbimbo1)
+
+## es mejor el modelo con ARIMA(3,1,2)
+
+###Para saber si el modelo tiene ruido blanco aplicamos lo siguiente (de los residuales ruido blanco)
+residuales <- residuals(modbimbo1)
+Box.test(residuales,lag = 12,type = "Ljung-Box") #Lag es el nuemro de retrasos, no importa mucho
+### Nos interesa un p.value grande
+
+
+###Ahora ya podemos pronosticar
+
+modpron <- forecast(modbimbo1,h=12) #Vamos a pronosticar 12 periodos
+plot(modpron,include = 18) #El include es como un zoom
+
+
+########  USANDO LA FUNCION auto.arima
+modauto <- auto.arima(bimbo)
+summary(modauto)
+## se tienen que hacer las pruebas de ruido blanco para poder pronosticar
+
+################## EJEMPLO 2 ##################
+
+#1.- REVISAR QUE LA SERIE ES ESTACIONARIA
+adf.test(cemex) # como el p-value es mayor a .05 se debe de diferenciar
+cemexdiff <- diff(cemex)
+adf.test(cemexdiff) # con una diferenciacion la serie es estacionaria
+## d=1
+
+#2.- Encontrar el valor de q
+acf(cemexdiff) ## Salen dos lineas de la frontera
+## q=2
+
+#3.- Encontrar el valor de p, relacionado con los modelos autorregresivos
+pacf(cemexdiff)
+## p=2
+
+## Por lo tanto el modelo queda ARIMA(2,1,2)
+
+modelo <- Arima(cemex,order = c(2,1,2))
+summary(modelo)
+
+#Ahora analizaremos si los residuales tienen ruido blanco
+res_cemex <- residuals(modelo)
+Box.test(res_cemex,type = "Ljung-Box",lag=12) #El p-value es grande, por lo que los residuales
+#tienen ruido blanco
+
+##Pronostico
+
+plot(forecast(modelo,h=12))
+
+#####Aplicando la funcion auto.arima
+
+automodelo <- auto.arima(cemex)
+res <- residuals(automodelo)
+summary(automodelo)
+Box.test(res,type = "Ljung-Box",lag = 12)
+plot(forecast(automodelo,h=12),include = 50)
+lines(forecast(modelo,h=12)$mean,col="red")
+legend("topleft",horiz = T,lty = 1,bty = "n",col=c("blue","red"),legend = c("ARIMA(0,1,0)","ARIMA(2,1,2)"))
