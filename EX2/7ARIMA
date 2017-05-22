@@ -1,0 +1,65 @@
+############ MODELOS AUTORREGRESIVOS (AR) ############
+#En un modelo autorregresivo se pronostica la variable de interes usando una combinacion lineal de los factores
+#pasados. Un modelo autorregresivo se define si la serie de tiempo en un periodo determinado es explicada por las 
+#observaciones anteriores e incorporando un termino de error.
+
+#La ecuacion de un modeloa autorregresivo de orden p se denota de la sig. manera:
+
+#      Y_t=c+suma de i=1 a p (PHI_t*Y_{t-i})+e_t
+#      donde c es una constante, e_t es el error (ruido blanco).
+
+#En este caso el modelo autorregresivo se denomina de orden p y se expresa como AR(p)
+
+#En un modelo AR(p) el valor de la serie en el momento t es una combinacion lineal de las ultimas o observaciones 
+#de la serie. 
+#En el caso mas simple el valor de la serie es en momento t solo depende de la observacion previa.
+
+#El modelo AR(p) se expresa Y_t=c+PHI_1*Y_{t-1}+e_t
+
+############ MODELOS DE PROMEDIOS MOVILES (MA) ############
+#Una cracteristica importante de estos modelos es que utiliza los erres de predicciones pasadas.
+#La ecuacion para estos modelos se plantea de la sig. manera
+#      Y_t=c+e_t+suma de i=1 a q (PHI_t*e_{t-i})
+#      donde e_t es el error y es ruido blanco, c es una constante
+      
+#Este modelo se expresa como MA(q)
+
+#En los modelos MA se puerde observar que cada valor y_t puede ser visto como un ponderador de promedios moviles
+#de predicciones de los errores pasados
+#Es importante que estos modelos no se confundan con los suavizados de promedios moviles que su principal
+#funcion de los suavizados es ajustar una ST con a finalidad de detectar tendencia y componente estacional.
+#En un modelo de promedio moviles su principal funcion es realizar pronosticos
+
+############ MODELOS ARIMA NO ESTACIONARIOS ############
+#Los modelos ARIMA se derivan de la combinacion de un modelo autorregresivo, un modelo de promedios moviles y de 
+#la diferenciacion.
+#Los modelos ARIMA se expresan de la siguiente forma
+      
+#        Y??_t=c+ suma de i=1 a p (PHI_t*Y_{t-i}) + suma de i=1 a q (PHI_t*e_{t-i})-e_t
+#                -------------------------------   -----------------------------------
+#                   componente autorregresivo         componente de promedio moviles
+ 
+#        donde Y??_t es la serie diferenciada
+        
+#Los predictores que se encuentran del lado derecho de la ec. incluyen los valores anteriores de la serie y los errores
+#Un modelo ARIMA se plantea de la sigueinte manera
+
+#        ARIMA(p,d,q); donde:
+#        p=orden del componente autorregresivo
+#        d=grado de diferenciacion
+#        q= orden de componente de promedios moviles
+        
+#Una de las dificultades que conllevan los modelos ARIMA es seleccionar los valores p,d,q
+
+#En R existe una funcion que permite proponer valores a los modelos ARIMA
+#La funcion en R es autoarima(). Esta funcion calcula los valores con el metodo de logaritmo de verosimilitud 
+#que calcula el logaritmo de la probabilidad de los datos observados, y encuentra parametros estimados.
+#Alguno de los modelos que hemos visto se pueden expresar como modelos ARIMA. 
+#Un modelo de ruido blanco se puede expresar como un ARIMA(0,0,0)
+#Un modelo autorregresivo se orden p se puede expresar como un ARIMA(p,0,0) y un promedio movil de orden q como
+#ARIMA(0,0,q)
+
+        
+        
+
+        
