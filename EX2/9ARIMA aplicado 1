@@ -1,0 +1,52 @@
+#####   MODELO AUTORREGRESIVO
+
+#Y_t=c+phi_1 * Y_{t-1}+ ... + phi_p * Y_{t_p}+e_t
+
+#####   MODELO PROMEDIO MOVIL
+
+#Y_t=C+e_t+theta_1 * e_{t-1}+ ... + theta_q * e_{t-q}
+
+#####   MODELO ARIMA
+
+#Y'_t=c+phi_1 * Y_{t-1}+ ... + phi_p * Y_{t_p}+e_t+theta_1 * e_{t-1}+ ... + theta_q * e_{t-q}+e_t
+#       -------------------------------------------  -----------------------------------------
+       #                AR                                             MA
+
+### Descargando serie de tiempo AMERICA MOVIL del 24 mayo 2016 a 24 mayo 2017
+require(forecast)
+amx <- ts(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/AMX.csv")[,5],frequency = 252,start = 2016)
+plot(amx)
+## es mejor usar la funcion Arima que la fn arima, ya que nos proporcional el valor AICc para saber cual es el mejor modelo
+zz <- Arima(amx,order = c(1,0,0)) #Planteando un modelo autorregresivo AR(1) con ARIMA
+zz
+# El modelo seria
+# Y_t=13.3425+.9864(Y_t - 1) + e_t , en este caso phi=.9864
+
+## Ahora plantearemos un modelo autorregresivo de orden 2 o ARMA(2,0)
+zz2 <- Arima(amx,order = c(2,0,0))
+zz2
+## entonces serie un modelo AR(2) planteandose de la sig forma
+# Y_t=13.2634+1.0601 (Y_t - 1) - 0.0755(Y_t - 2)+e_t, por lo que phi1=1.6001 y phi2=-0.0755
+
+### Ahora planteremos un modelo de promedio moviles MA(q)
+
+yy <- Arima(amx,order = c(0,0,1))
+yy
+## Y_t=12.7409+0.8605(e_t - 1)
+
+yy2 <- Arima(amx,order = c(0,0,2)) ## MA(2) o ARMA(0,2)
+yy2
+## Y_t=12.7481+1.339(e_t - 1)+0.7423(e_t - 2)
+
+### MODELOS ARIMA CON DIFERENCIACION
+
+(XX <- Arima(amx,order = c(2,1,2))) ## en este caso no tenemos constante
+##Y'_t=0.871(Y'_t -1 ) - 0.3364(Y'_t - 2 )-0.8362(e_t - 1)+0.1378(e_t - 2)+e_t 
+
+##### EJEMPLO
+
+carso <- ts(read.csv("/Users/rodrigomondragondillanes/Documents/Series de tiempo/GCARSOA1.MX.csv")[,5],frequency = 252,start = 2016)
+plot(carso)
+arimacarso <- Arima(carso,order = c(2,2,2))
+arimacarso
+##Y'_t=0.6885(Y'_t -1 ) - 0.1429(Y'_t - 2 )-1.7753(e_t - 1)+0.7753(e_t - 2)+e_t 
